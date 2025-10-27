@@ -11,7 +11,7 @@ export default function ProductCard({ product }) {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all">
       <Link href={`/products/${product.id}`}>
         <div className="h-48 overflow-hidden">
           <img 
@@ -23,18 +23,18 @@ export default function ProductCard({ product }) {
       </Link>
       
       <div className="p-4">
-        <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+        <span className="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
           {product.category}
         </span>
         
         <Link href={`/products/${product.id}`}>
-          <h3 className="font-semibold text-lg mt-2 mb-1 line-clamp-2 hover:text-blue-600">
+          <h3 className="font-semibold text-lg mt-2 mb-1 line-clamp-2 hover:text-blue-600 dark:hover:text-blue-400 dark:text-white transition-colors">
             {product.title}
           </h3>
         </Link>
         
         <div className="flex items-center justify-between mt-3">
-          <span className="text-2xl font-bold text-green-600">
+          <span className="text-2xl font-bold text-green-600 dark:text-green-400">
             ${product.price}
           </span>
           <button
