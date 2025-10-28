@@ -8,7 +8,7 @@ export default function ScrollToTop() {
 
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.pageYOffset > 300) {
+      if (window.scrollY > 400) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
@@ -30,46 +30,44 @@ export default function ScrollToTop() {
     <AnimatePresence>
       {isVisible && (
         <motion.button
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0, opacity: 0 }}
-          whileHover={{ scale: 1.1 }}
+          initial={{ scale: 0, opacity: 0, y: 100 }}
+          animate={{ scale: 1, opacity: 1, y: 0 }}
+          exit={{ scale: 0, opacity: 0, y: 100 }}
+          whileHover={{ scale: 1.15, rotate: 5 }}
           whileTap={{ scale: 0.9 }}
+          transition={{ type: "spring", stiffness: 250, damping: 15 }}
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-40 group"
+          className="fixed bottom-8 right-8 z-50 group focus:outline-none"
         >
           <div className="relative">
-            {/* Animated rings */}
-            <motion.div
-              animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0.5, 0, 0.5],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full"
-            />
+            {/* 🌀 Glowing animated aura */}
             <motion.div
               animate={{
                 scale: [1, 1.3, 1],
-                opacity: [0.3, 0, 0.3],
+                opacity: [0.4, 0.1, 0.4],
               }}
               transition={{
-                duration: 2,
+                duration: 2.5,
                 repeat: Infinity,
                 ease: "easeInOut",
-                delay: 0.5,
               }}
-              className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full"
+              className="absolute inset-0 rounded-full bg-gradient-to-r from-green-500 via-emerald-600 to-teal-500 blur-md"
             />
-            
-            {/* Button */}
-            <div className="relative w-14 h-14 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center shadow-lg hover:shadow-2xl transition-shadow">
+
+            {/* 💎 Main Button */}
+            <motion.div
+              animate={{
+                y: [0, -4, 0],
+              }}
+              transition={{
+                duration: 1.8,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="relative w-14 h-14 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-500 rounded-full flex items-center justify-center shadow-lg hover:shadow-2xl transition-all"
+            >
               <FiArrowUp className="text-white text-2xl group-hover:animate-bounce" />
-            </div>
+            </motion.div>
           </div>
         </motion.button>
       )}

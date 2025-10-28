@@ -8,7 +8,7 @@ import useCartStore from "@/store/cartStore";
 
 export default function AllProducts({ products = [] }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [visibleCount, setVisibleCount] = useState(6); // 👈 initially show 6
+  const [visibleCount, setVisibleCount] = useState(9); // 👈 show 9 initially
   const addToCart = useCartStore((state) => state.addToCart);
 
   const categories = useMemo(() => {
@@ -23,9 +23,8 @@ export default function AllProducts({ products = [] }) {
 
   const visibleProducts = filtered.slice(0, visibleCount);
 
-  const handleShowMore = () => {
-    setVisibleCount((prev) => prev + 10); // 👈 load 10 more each click
-  };
+  const handleShowMore = () => setVisibleCount((prev) => prev + 9);
+  const handleShowLess = () => setVisibleCount((prev) => Math.max(9, prev - 9));
 
   return (
     <section className="w-full py-16 bg-gray-50 dark:bg-gray-950 rounded-3xl shadow-inner">
@@ -62,7 +61,7 @@ export default function AllProducts({ products = [] }) {
                 }`}
                 onClick={() => {
                   setSelectedCategory(cat);
-                  setVisibleCount(6); // 👈 reset when category changes
+                  setVisibleCount(9); // reset when switching category
                 }}
               >
                 {cat.charAt(0).toUpperCase() + cat.slice(1)}
@@ -90,7 +89,7 @@ export default function AllProducts({ products = [] }) {
                 transition={{ type: "spring", stiffness: 200 }}
                 className="relative z-0 bg-white dark:bg-gray-900 rounded-2xl shadow-lg hover:shadow-2xl transition-all overflow-hidden group border border-gray-100 dark:border-gray-800"
               >
-                {/* 🖼 Product Image */}
+                {/* 🖼 Product Image and Link */}
                 <Link
                   href={`/products/${product.id}`}
                   className="block relative w-full h-56 bg-gray-50 dark:bg-gray-800 z-10"
@@ -138,6 +137,7 @@ export default function AllProducts({ products = [] }) {
                       </p>
                     </div>
 
+                    {/* ✅ Cart Button */}
                     <motion.button
                       whileTap={{ scale: 0.9 }}
                       onClick={() => addToCart(product)}
@@ -148,7 +148,7 @@ export default function AllProducts({ products = [] }) {
                   </div>
                 </div>
 
-                {/* Hover Overlay */}
+                {/* ✅ Hover Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-60 transition-opacity z-0 pointer-events-none"></div>
               </motion.div>
             ))
@@ -156,22 +156,36 @@ export default function AllProducts({ products = [] }) {
         </motion.div>
       </div>
 
-      {/* ✅ Show More Button */}
-      {visibleCount < filtered.length && (
-        <div className="flex justify-center mt-12">
-          <motion.button
-            whileHover={{
-              scale: 1.05,
-              backgroundColor: "rgba(255,255,255,0.1)",
-              borderColor: "#22c55e",
-              color: "#22c55e",
-            }}
-            whileTap={{ scale: 0.95 }}
-            onClick={handleShowMore}
-            className="px-8 py-3 border border-white/30 text-white text-lg font-semibold rounded-full transition-all duration-300 bg-transparent hover:border-green-500"
-          >
-            Show More
-          </motion.button>
+      {/* ✅ Show More / Show Less Buttons */}
+      {(visibleCount < filtered.length || visibleCount > 9) && (
+        <div className="flex justify-end mt-12 space-x-4 mx-auto px-6">
+          {visibleCount < filtered.length && (
+            <motion.button
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 0 15px rgba(34,197,94,0.5)",
+              }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleShowMore}
+              className="px-4 py-2 border border-green-600 text-green-700 dark:text-green-400 text-sm font-semibold rounded-full transition-all duration-300 bg-white dark:bg-gray-900 hover:bg-green-600 hover:text-white"
+            >
+              Show More
+            </motion.button>
+          )}
+
+          {visibleCount > 9 && (
+            <motion.button
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 0 15px rgba(239,68,68,0.5)",
+              }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleShowLess}
+              className="px-4 py-2 border border-red-500 text-red-600 dark:text-red-400 text-sm font-semibold rounded-full transition-all duration-300 bg-white dark:bg-gray-900 hover:bg-red-600 hover:text-white"
+            >
+              Show Less
+            </motion.button>
+          )}
         </div>
       )}
     </section>
