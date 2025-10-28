@@ -97,21 +97,55 @@ export default function ProductDetail() {
 
         {/* Main Content */}
         <div className="grid lg:grid-cols-2 gap-10 sm:gap-14">
-          {/* LEFT: Product Image */}
+          {/* LEFT: Product Image with Zoom & Magnifier Icon */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="relative bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden group">
+            <div
+              className="relative bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden group cursor-zoom-in"
+              onMouseMove={(e) => {
+                const img = e.currentTarget.querySelector("img");
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                img.style.transformOrigin = `${x}% ${y}%`;
+              }}
+              onMouseLeave={(e) => {
+                const img = e.currentTarget.querySelector("img");
+                img.style.transformOrigin = "center center";
+              }}
+            >
+              {/* Main Product Image */}
               <motion.img
                 key={selectedImage}
                 src={product.image}
                 alt={product.title}
-                className="w-full h-72 sm:h-[420px] md:h-[480px] object-contain p-6 sm:p-10 transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-72 sm:h-[420px] md:h-[480px] object-contain p-6 sm:p-10 transition-transform duration-500 ease-out group-hover:scale-150"
               />
 
-              {/* Like button */}
+              {/* 🔍 Magnifier Icon — appears on hover */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                <div className="flex items-center justify-center w-16 h-16 rounded-full bg-black/40 backdrop-blur-md">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-8 h-8 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"
+                    />
+                  </svg>
+                </div>
+              </div>
+
+              {/* ❤️ Like Button */}
               <motion.button
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setIsLiked(!isLiked)}
