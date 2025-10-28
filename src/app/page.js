@@ -84,7 +84,7 @@ export default function Home() {
   const topProducts = findTopProducts(products);
 
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-gray-950 mx-10">
+    <main className="min-h-screen bg-gray-50 dark:bg-gray-950 mx-2 md:mx-10">
       {/* Hero Slider */}
       <HeroSlider />
 

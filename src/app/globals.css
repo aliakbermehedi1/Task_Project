@@ -1,42 +1,65 @@
 @import "tailwindcss";
 
-/* Custom Scrollbar */
+/* 🌿 Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f9fafb;
+  background: #f3f4f6; /* Light gray for light mode */
 }
 
 .dark ::-webkit-scrollbar-track {
-  background: #030712;
+  background: #0f172a; /* Dark navy background for dark mode */
 }
 
+/* ✅ Emerald gradient thumb */
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #3b82f6, #8b5cf6);
-  border-radius: 6px;
+  background: linear-gradient(
+    to right,
+    #065f46,
+    #16a34a,
+    #047857
+  ); /* from-emerald-800 via-green-600 to-emerald-700 */
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: all 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #2563eb, #7c3aed);
+  background: linear-gradient(
+    to right,
+    #064e3b,
+    #15803d,
+    #065f46
+  ); /* darker hover effect */
 }
 
-/* Selection color */
+/* 🌗 Dark mode emerald tone */
+.dark ::-webkit-scrollbar-thumb {
+  background: linear-gradient(to right, #065f46, #16a34a, #047857);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to right, #064e3b, #15803d, #065f46);
+}
+
+/* ✨ Selection color */
 ::selection {
-  background: rgba(59, 130, 246, 0.3);
+  background: rgba(16, 185, 129, 0.3); /* emerald glow */
 }
 
 .dark ::selection {
-  background: rgba(139, 92, 246, 0.3);
+  background: rgba(52, 211, 153, 0.3);
 }
 
-/* Smooth scroll */
+/* 🌀 Smooth scroll */
 html {
   scroll-behavior: smooth;
 }
 
-/* Line clamp for text overflow */
+/* 🧾 Line clamp for text overflow */
 .line-clamp-1 {
   overflow: hidden;
   display: -webkit-box;
@@ -56,17 +79,4 @@ html {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
-}
-
-
-/* Custom scrollbar styling */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-thumb {
-  background-color: #d1d5db; /* gray-300 */
-  border-radius: 8px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background-color: #9ca3af; /* gray-400 */
 }

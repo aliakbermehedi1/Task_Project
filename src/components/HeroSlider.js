@@ -63,10 +63,10 @@ const HeroSlider = () => {
   ];
 
   return (
-    <section className="w-full rounded-2xl my-4">
-      <div className="flex flex-col md:flex-row gap-4">
+    <section className="w-full rounded-2xl my-4 px-2 sm:px-0">
+      <div className="flex flex-col lg:flex-row gap-4">
         {/* Banner Section */}
-        <div className="w-full md:w-3/4 rounded-2xl overflow-hidden">
+        <div className="w-full lg:w-3/4 rounded-2xl overflow-hidden">
           <Swiper
             modules={[Autoplay, Pagination]}
             autoplay={{ delay: 4000, disableOnInteraction: false }}
@@ -76,7 +76,7 @@ const HeroSlider = () => {
           >
             {images.map((img, index) => (
               <SwiperSlide key={index}>
-                <div className="relative w-full h-[340px] md:h-[410px] rounded-2xl overflow-hidden">
+                <div className="relative w-full h-[220px] sm:h-[300px] md:h-[380px] lg:h-[420px] rounded-2xl overflow-hidden">
                   <Image
                     src={img}
                     alt={`Banner ${index + 1}`}
@@ -91,38 +91,38 @@ const HeroSlider = () => {
         </div>
 
         {/* Campaign Section */}
-        <div className="w-full md:w-1/4 bg-gray-100 shadow-sm rounded-2xl p-5 flex flex-col justify-start items-center">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">
+        <div className="w-full lg:w-1/4 bg-gray-100 dark:bg-gray-900 shadow-sm rounded-2xl p-5 flex flex-col justify-start items-center">
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4 text-center">
             Upcoming Campaigns
           </h3>
 
-          {/* Scrollable Campaign List — shows 2 full + partial 3rd */}
-          <div className="flex flex-col gap-4 w-full max-h-[290px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 scroll-smooth">
+          {/* Scrollable Campaign List */}
+          <div className="flex flex-col gap-4 w-full max-h-[180px] md:max-h-[310px] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 scroll-smooth">
             {timers.map((t, i) => (
               <motion.div
                 key={i}
-                className="bg-white rounded-xl p-3 shadow-sm border border-gray-100 w-full flex-shrink-0"
+                className="bg-white dark:bg-gray-800 rounded-xl p-3 shadow-sm border border-gray-100 dark:border-gray-700 w-full flex-shrink-0"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
               >
-                <h4 className="text-md font-semibold text-gray-800 text-center mb-1">
+                <h4 className="text-md font-semibold text-gray-800 dark:text-white text-center mb-1">
                   {t.title}
                 </h4>
-                <p className="text-xs text-orange-500 mb-2 text-center font-medium">
+                <p className="text-xs text-emerald-600 mb-2 text-center font-medium">
                   Campaign starts in
                 </p>
-                <div className="flex justify-center gap-2 text-xs">
-                  <div className="bg-gray-800 text-white px-2 py-1 rounded-md">
+                <div className="flex justify-center gap-2 text-xs flex-wrap">
+                  <div className="bg-gray-800 text-white px-2 py-1 rounded-md min-w-[32px] text-center">
                     {t.days}d
                   </div>
-                  <div className="bg-gray-800 text-white px-2 py-1 rounded-md">
+                  <div className="bg-gray-800 text-white px-2 py-1 rounded-md min-w-[32px] text-center">
                     {t.hours}h
                   </div>
-                  <div className="bg-gray-800 text-white px-2 py-1 rounded-md">
+                  <div className="bg-gray-800 text-white px-2 py-1 rounded-md min-w-[32px] text-center">
                     {t.minutes}m
                   </div>
-                  <div className="bg-gray-800 text-white px-2 py-1 rounded-md">
+                  <div className="bg-gray-800 text-white px-2 py-1 rounded-md min-w-[32px] text-center">
                     {t.seconds}s
                   </div>
                 </div>
