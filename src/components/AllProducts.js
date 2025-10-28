@@ -8,6 +8,7 @@ import useCartStore from "@/store/cartStore";
 
 export default function AllProducts({ products = [] }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [visibleCount, setVisibleCount] = useState(6); // 👈 initially show 6
   const addToCart = useCartStore((state) => state.addToCart);
 
   const categories = useMemo(() => {
@@ -19,6 +20,12 @@ export default function AllProducts({ products = [] }) {
     selectedCategory === "All"
       ? products
       : products.filter((p) => p.category === selectedCategory);
+
+  const visibleProducts = filtered.slice(0, visibleCount);
+
+  const handleShowMore = () => {
+    setVisibleCount((prev) => prev + 10); // 👈 load 10 more each click
+  };
 
   return (
     <section className="w-full py-16 bg-gray-50 dark:bg-gray-950 rounded-3xl shadow-inner">
@@ -53,7 +60,10 @@ export default function AllProducts({ products = [] }) {
                     ? "bg-green-600 text-white shadow-md"
                     : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-green-100 dark:hover:bg-green-900/40"
                 }`}
-                onClick={() => setSelectedCategory(cat)}
+                onClick={() => {
+                  setSelectedCategory(cat);
+                  setVisibleCount(6); // 👈 reset when category changes
+                }}
               >
                 {cat.charAt(0).toUpperCase() + cat.slice(1)}
               </motion.li>
@@ -66,13 +76,13 @@ export default function AllProducts({ products = [] }) {
           layout
           className="w-full lg:w-3/4 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8"
         >
-          {filtered.length === 0 ? (
+          {visibleProducts.length === 0 ? (
             <div className="col-span-full text-center py-20 text-gray-500 dark:text-gray-400">
               <div className="text-6xl mb-4">😕</div>
               No products found in this category
             </div>
           ) : (
-            filtered.map((product) => (
+            visibleProducts.map((product) => (
               <motion.div
                 key={product.id}
                 layout
@@ -80,7 +90,7 @@ export default function AllProducts({ products = [] }) {
                 transition={{ type: "spring", stiffness: 200 }}
                 className="relative z-0 bg-white dark:bg-gray-900 rounded-2xl shadow-lg hover:shadow-2xl transition-all overflow-hidden group border border-gray-100 dark:border-gray-800"
               >
-                {/* 🖼 Product Image and Link */}
+                {/* 🖼 Product Image */}
                 <Link
                   href={`/products/${product.id}`}
                   className="block relative w-full h-56 bg-gray-50 dark:bg-gray-800 z-10"
@@ -128,7 +138,6 @@ export default function AllProducts({ products = [] }) {
                       </p>
                     </div>
 
-                    {/* ✅ Cart Button (clickable even with overlay) */}
                     <motion.button
                       whileTap={{ scale: 0.9 }}
                       onClick={() => addToCart(product)}
@@ -139,13 +148,32 @@ export default function AllProducts({ products = [] }) {
                   </div>
                 </div>
 
-                {/* ✅ Hover Overlay (non-blocking clicks) */}
+                {/* Hover Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-60 transition-opacity z-0 pointer-events-none"></div>
               </motion.div>
             ))
           )}
         </motion.div>
       </div>
+
+      {/* ✅ Show More Button */}
+      {visibleCount < filtered.length && (
+        <div className="flex justify-center mt-12">
+          <motion.button
+            whileHover={{
+              scale: 1.05,
+              backgroundColor: "rgba(255,255,255,0.1)",
+              borderColor: "#22c55e",
+              color: "#22c55e",
+            }}
+            whileTap={{ scale: 0.95 }}
+            onClick={handleShowMore}
+            className="px-8 py-3 border border-white/30 text-white text-lg font-semibold rounded-full transition-all duration-300 bg-transparent hover:border-green-500"
+          >
+            Show More
+          </motion.button>
+        </div>
+      )}
     </section>
   );
 }
