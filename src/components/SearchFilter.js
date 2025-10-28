@@ -1,23 +1,24 @@
 "use client";
 import { useState, useMemo, useCallback } from "react";
+import { motion } from "framer-motion";
+import { FiSearch, FiFilter, FiX } from "react-icons/fi";
 
 export default function SearchFilter({ products, onFilter }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
+  const [showFilters, setShowFilters] = useState(false);
 
-  // Memoize categories for better performance
   const categories = useMemo(() => {
     return [...new Set(products.map((product) => product.category))];
   }, [products]);
 
-  // Get price range for the dataset
   const priceRange = useMemo(() => {
     const prices = products.map((product) => product.price);
     return {
-      min: Math.min(...prices),
-      max: Math.max(...prices),
+      min: Math.floor(Math.min(...prices)),
+      max: Math.ceil(Math.max(...prices)),
     };
   }, [products]);
 
@@ -25,7 +26,6 @@ export default function SearchFilter({ products, onFilter }) {
     (search, category, min, max) => {
       let filtered = products;
 
-      // Search filter
       if (search) {
         filtered = filtered.filter(
           (product) =>
@@ -34,12 +34,10 @@ export default function SearchFilter({ products, onFilter }) {
         );
       }
 
-      // Category filter
       if (category) {
         filtered = filtered.filter((product) => product.category === category);
       }
 
-      // Price range filter
       if (min) {
         filtered = filtered.filter(
           (product) => product.price >= parseFloat(min)
@@ -89,100 +87,157 @@ export default function SearchFilter({ products, onFilter }) {
     onFilter(products);
   };
 
+  const hasActiveFilters =
+    searchTerm || selectedCategory || minPrice || maxPrice;
+
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-8 transition-colors">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Search Input */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Search Products
-          </label>
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={handleSearch}
-            placeholder="Search by name or description..."
-            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-colors"
-          />
-        </div>
-
-        {/* Category Filter */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Filter by Category
-          </label>
-          <select
-            value={selectedCategory}
-            onChange={handleCategoryChange}
-            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-colors"
-          >
-            <option value="">All Categories</option>
-            {categories.map((category) => (
-              <option key={category} value={category}>
-                {category
-                  .split(" ")
-                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(" ")}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Min Price Filter */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Min Price (${priceRange.min.toFixed(2)})
-          </label>
-          <input
-            type="number"
-            value={minPrice}
-            onChange={handleMinPriceChange}
-            placeholder="Min price"
-            min="0"
-            step="0.01"
-            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-colors"
-          />
-        </div>
-
-        {/* Max Price Filter */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Max Price (${priceRange.max.toFixed(2)})
-          </label>
-          <input
-            type="number"
-            value={maxPrice}
-            onChange={handleMaxPriceChange}
-            placeholder="Max price"
-            min="0"
-            step="0.01"
-            className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white transition-colors"
-          />
-        </div>
-      </div>
-
-      {/* Clear Filters Button */}
-      <div className="flex justify-end mt-4">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden mb-8 transition-colors">
+      {/* Mobile Filter Toggle */}
+      <div className="lg:hidden p-4 border-b border-gray-200 dark:border-gray-700">
         <button
-          onClick={clearFilters}
-          className="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 transition-colors"
+          onClick={() => setShowFilters(!showFilters)}
+          className="w-full flex items-center justify-between bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold"
         >
-          Clear All Filters
+          <span className="flex items-center space-x-2">
+            <FiFilter />
+            <span>Filters</span>
+          </span>
+          {hasActiveFilters && (
+            <span className="bg-white text-blue-600 px-2 py-1 rounded-full text-xs font-bold">
+              Active
+            </span>
+          )}
         </button>
       </div>
 
-      {/* Active Filters Display */}
-      {(searchTerm || selectedCategory || minPrice || maxPrice) && (
-        <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900 rounded-lg">
-          <p className="text-sm text-blue-700 dark:text-blue-300">
-            Active filters:
-            {searchTerm && ` Search: "${searchTerm}"`}
-            {selectedCategory && ` Category: ${selectedCategory}`}
-            {minPrice && ` Min Price: $${minPrice}`}
-            {maxPrice && ` Max Price: $${maxPrice}`}
-          </p>
+      {/* Filters */}
+      <motion.div
+        initial={false}
+        animate={{
+          height: showFilters || window.innerWidth >= 1024 ? "auto" : 0,
+        }}
+        className="overflow-hidden lg:overflow-visible"
+      >
+        <div className="p-6">
+          {/* Search Bar */}
+          <div className="mb-6">
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+              Search Products
+            </label>
+            <div className="relative">
+              <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl" />
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={handleSearch}
+                placeholder="Search by name or description..."
+                className="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-white transition-all text-lg"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Category Filter */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                Category
+              </label>
+              <select
+                value={selectedCategory}
+                onChange={handleCategoryChange}
+                className="w-full px-4 py-4 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-white transition-all text-base"
+              >
+                <option value="">All Categories</option>
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category
+                      .split(" ")
+                      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                      .join(" ")}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Min Price Filter */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                Min Price (${priceRange.min})
+              </label>
+              <input
+                type="number"
+                value={minPrice}
+                onChange={handleMinPriceChange}
+                placeholder={`Min $${priceRange.min}`}
+                min="0"
+                step="0.01"
+                className="w-full px-4 py-4 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-white transition-all text-base"
+              />
+            </div>
+
+            {/* Max Price Filter */}
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                Max Price (${priceRange.max})
+              </label>
+              <input
+                type="number"
+                value={maxPrice}
+                onChange={handleMaxPriceChange}
+                placeholder={`Max $${priceRange.max}`}
+                min="0"
+                step="0.01"
+                className="w-full px-4 py-4 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:text-white transition-all text-base"
+              />
+            </div>
+          </div>
+
+          {/* Clear Button */}
+          {hasActiveFilters && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-6 flex items-center justify-between bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4"
+            >
+              <div className="flex flex-wrap gap-2">
+                {searchTerm && (
+                  <span className="inline-flex items-center space-x-2 bg-white dark:bg-gray-800 px-3 py-1 rounded-full text-sm">
+                    <span className="text-gray-600 dark:text-gray-400">
+                      Search: <strong className="text-gray-900 dark:text-white">{searchTerm}</strong>
+                    </span>
+                  </span>
+                )}
+                {selectedCategory && (
+                  <span className="inline-flex items-center space-x-2 bg-white dark:bg-gray-800 px-3 py-1 rounded-full text-sm">
+                    <span className="text-gray-600 dark:text-gray-400">
+                      Category: <strong className="text-gray-900 dark:text-white">{selectedCategory}</strong>
+                    </span>
+                  </span>
+                )}
+                {(minPrice || maxPrice) && (
+                  <span className="inline-flex items-center space-x-2 bg-white dark:bg-gray-800 px-3 py-1 rounded-full text-sm">
+                    <span className="text-gray-600 dark:text-gray-400">
+                      Price: <strong className="text-gray-900 dark:text-white">
+                        ${minPrice || priceRange.min} - ${maxPrice || priceRange.max}
+                      </strong>
+                    </span>
+                  </span>
+                )}
+              </div>
+
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={clearFilters}
+                className="flex items-center space-x-2 bg-gradient-to-r from-red-600 to-red-500 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all font-semibold"
+              >
+                <FiX />
+                <span>Clear All</span>
+              </motion.button>
+            </motion.div>
+          )}
         </div>
-      )}
+      </motion.div>
     </div>
   );
 }

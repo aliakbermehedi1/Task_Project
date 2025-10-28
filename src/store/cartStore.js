@@ -6,8 +6,18 @@ const useCartStore = create(
     (set, get) => ({
       // State
       items: [],
+      isCartOpen: false,
 
-      // Actions
+      // Cart Toggle Actions
+      toggleCart: () => {
+        console.log("Toggle cart clicked"); // Debug
+        set({ isCartOpen: !get().isCartOpen });
+      },
+
+      closeCart: () => set({ isCartOpen: false }),
+      openCart: () => set({ isCartOpen: true }),
+
+      // Cart Item Actions
       addToCart: (product) => {
         const { items } = get();
         const existingItem = items.find((item) => item.id === product.id);
@@ -25,6 +35,9 @@ const useCartStore = create(
             items: [...items, { ...product, quantity: 1 }],
           });
         }
+
+        // ❌ এই লাইনটা মুছে ফেলো
+        // set({ isCartOpen: true });
       },
 
       removeFromCart: (productId) => {
@@ -52,7 +65,7 @@ const useCartStore = create(
         set({ items: [] });
       },
 
-      // Get total price
+      // Getters
       getTotalPrice: () => {
         const { items } = get();
         return items.reduce(
@@ -61,14 +74,15 @@ const useCartStore = create(
         );
       },
 
-      // Get total items count
       getTotalItems: () => {
         const { items } = get();
         return items.reduce((total, item) => total + item.quantity, 0);
       },
     }),
     {
-      name: "cart-storage", // localStorage key
+      name: "cart-storage",
+      // Only persist items, not isCartOpen state
+      partialize: (state) => ({ items: state.items }),
     }
   )
 );
