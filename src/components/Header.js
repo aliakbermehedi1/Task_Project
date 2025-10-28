@@ -14,6 +14,13 @@ import {
 import { BsSunFill, BsMoonStarsFill } from "react-icons/bs";
 import SearchBar from "./SearchBar";
 
+// ✅ Import Google Font (Galada)
+import { Galada } from "next/font/google";
+const galada = Galada({
+  subsets: ["latin"],
+  weight: "400",
+});
+
 export default function Header() {
   const { getTotalItems, toggleCart } = useCartStore();
   const [mounted, setMounted] = useState(false);
@@ -24,6 +31,7 @@ export default function Header() {
   const [animateCart, setAnimateCart] = useState(false);
 
   useLayoutEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
@@ -32,9 +40,10 @@ export default function Header() {
 
   const cartItemCount = getTotalItems();
 
-  // 🌀 Trigger blink animation when cart count changes
+  // 🌀 Blink animation when cart count changes
   useEffect(() => {
     if (mounted) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setAnimateCart(true);
       const timer = setTimeout(() => setAnimateCart(false), 500);
       return () => clearTimeout(timer);
@@ -66,22 +75,24 @@ export default function Header() {
       }`}
     >
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-16 md:h-20">
-          {/* Logo */}
+        <div className="flex justify-between items-center h-16 md:h-16">
+          {/* ✅ Logo */}
           <Link href="/" className="flex items-center space-x-3 group">
-            <motion.div
+            <motion.span
               whileHover={{ scale: 1.05 }}
-              transition={{ duration: 0.2 }}
-              className="w-10 h-10 rounded-xl flex items-center justify-center bg-black dark:bg-gray-800 shadow-sm"
+              transition={{ duration: 0.3 }}
+              className={`${galada.className} text-4xl font-bold select-none bg-clip-text text-transparent bg-gradient-to-r from-black to-gray-700 dark:from-white dark:to-gray-400`} 
+              style={{
+                letterSpacing: "-0.5px",
+                textShadow:
+                  "0 2px 5px rgba(0,0,0,0.25), 0 0 10px rgba(0,0,0,0.1)",
+              }}
             >
-              <span className="text-white font-bold text-xl">S</span>
-            </motion.div>
-            <span className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
-              SGL Shop
-            </span>
+              কেনাকাটা
+            </motion.span>
           </Link>
 
-          {/* Desktop Middle — Search */}
+          {/* Desktop Search */}
           <div className="hidden md:flex flex-1 justify-center">
             <SearchBar />
           </div>
@@ -116,7 +127,7 @@ export default function Header() {
               )}
             </motion.button>
 
-            {/* Cart with blink animation */}
+            {/* Cart */}
             <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={toggleCart}
@@ -148,7 +159,7 @@ export default function Header() {
               )}
             </motion.button>
 
-            {/* Mobile menu */}
+            {/* Mobile Menu */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="md:hidden text-2xl text-gray-700 dark:text-gray-300"

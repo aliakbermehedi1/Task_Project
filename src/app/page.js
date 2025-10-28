@@ -6,6 +6,7 @@ import { findTopProducts } from "@/utils/topProducts";
 import { motion } from "framer-motion";
 import { FiTrendingUp, FiShoppingBag, FiStar } from "react-icons/fi";
 import TopDeals from "@/components/TopDeals";
+import AllProducts from "@/components/AllProducts";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -89,95 +90,7 @@ export default function Home() {
 
       <TopDeals products={products} />
 
-      <div className="container mx-auto px-4 mt-10">
-        {/* Top Products Section */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="py-12"
-        >
-          <div className="text-center mb-12">
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.3 }}
-              className="inline-flex items-center space-x-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full mb-4"
-            >
-              <FiStar className="animate-pulse" />
-              <span className="font-semibold">Featured Collection</span>
-            </motion.div>
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Top Rated Products
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
-              Handpicked selection of our best products based on customer
-              ratings and value
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-            {topProducts.map((product, index) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 + index * 0.1 }}
-              >
-                <ProductCard product={product} featured />
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
-
-        {/* All Products Section */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="py-12"
-        >
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Explore All Products
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 text-lg">
-              Showing {filteredProducts.length} of {products.length} products
-            </p>
-          </div>
-
-          {filteredProducts.length === 0 ? (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="text-center py-20"
-            >
-              <div className="w-32 h-32 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-6xl">🔍</span>
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                No Products Found
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400 text-lg mb-6">
-                Try adjusting your filters or search terms
-              </p>
-            </motion.div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredProducts.map((product, index) => (
-                <motion.div
-                  key={product.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                >
-                  <ProductCard product={product} />
-                </motion.div>
-              ))}
-            </div>
-          )}
-        </motion.section>
-      </div>
+      <AllProducts products={products} />
     </main>
   );
 }
