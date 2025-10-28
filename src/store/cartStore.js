@@ -10,7 +10,7 @@ const useCartStore = create(
 
       // Cart Toggle Actions
       toggleCart: () => {
-        console.log("Toggle cart clicked"); // Debug
+        console.log("Toggle cart clicked");
         set({ isCartOpen: !get().isCartOpen });
       },
 
@@ -35,9 +35,6 @@ const useCartStore = create(
             items: [...items, { ...product, quantity: 1 }],
           });
         }
-
-        // ❌ এই লাইনটা মুছে ফেলো
-        // set({ isCartOpen: true });
       },
 
       removeFromCart: (productId) => {

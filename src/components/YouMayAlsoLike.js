@@ -1,26 +1,37 @@
 "use client";
-import { useRef, useState, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { FiShoppingCart, FiStar } from "react-icons/fi";
-import useCartStore from "../store/cartStore";
 import { toast } from "react-toastify";
+import useCartStore from "@/store/cartStore";
 
-const TopDeals = ({ products = [] }) => {
-  const top10 = products.slice(0, 10);
+const YouMayAlsoLike = ({ category }) => {
+  const [related, setRelated] = useState([]);
+  const [swiperInstance, setSwiperInstance] = useState(null);
   const prevRef = useRef(null);
   const nextRef = useRef(null);
-  const [swiperInstance, setSwiperInstance] = useState(null);
   const { addToCart } = useCartStore();
 
+  // ✅ Fetch similar products by category
   useEffect(() => {
-    if (!swiperInstance) return;
-    if (prevRef.current && nextRef.current) {
+    const fetchRelated = async () => {
+      const res = await fetch("https://fakestoreapi.com/products");
+      const data = await res.json();
+      const similar = data.filter((p) => p.category === category);
+      setRelated(similar.slice(0, 10));
+    };
+    fetchRelated();
+  }, [category]);
+
+  // ✅ Attach navigation buttons
+  useEffect(() => {
+    if (swiperInstance && prevRef.current && nextRef.current) {
       // eslint-disable-next-line react-hooks/immutability
       swiperInstance.params.navigation.prevEl = prevRef.current;
       swiperInstance.params.navigation.nextEl = nextRef.current;
@@ -37,31 +48,33 @@ const TopDeals = ({ products = [] }) => {
     });
   };
 
+  if (!related.length) return null;
+
   return (
-    <section className="my-10">
-      <div className="bg-gradient-to-r from-emerald-800 via-green-600 to-emerald-700 rounded-3xl p-5 shadow-2xl text-white relative overflow-hidden">
-        {/* 🔥 Header */}
-        <div className="flex items-center justify-between mb-4">
+    <section className="mt-20">
+      <div className="bg-gradient-to-r from-emerald-800 via-green-600 to-emerald-700 rounded-3xl p-6 shadow-2xl text-white relative overflow-hidden">
+        {/* 🖤 Header */}
+        <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-2xl font-extrabold uppercase flex items-center gap-2">
-              💥 Top Deals
+              💚 You May Also Like
             </h2>
             <p className="text-sm opacity-90 italic">
-              Best-selling products with exclusive discounts!
+              Similar products based on your interest
             </p>
           </div>
           <p className="text-xs md:text-sm font-medium bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm shadow">
-            Limited time offers ⏳
+            Recommended for you ✨
           </p>
         </div>
 
-        {/* 🛒 Product Carousel */}
+        {/* 🛍 Product Carousel */}
         <div className="relative">
           <Swiper
             modules={[Navigation, Autoplay]}
             spaceBetween={20}
             slidesPerView={2}
-            autoplay={{ delay: 3500, disableOnInteraction: false }}
+            autoplay={{ delay: 4000, disableOnInteraction: false }}
             breakpoints={{
               640: { slidesPerView: 2 },
               1024: { slidesPerView: 4 },
@@ -69,21 +82,22 @@ const TopDeals = ({ products = [] }) => {
             }}
             onSwiper={setSwiperInstance}
           >
-            {top10.map((product, i) => {
-              const oldPrice = product.price * 1.3;
+            {related.map((product) => {
+              const oldPrice = product.price * 1.25;
               const discount = Math.floor((1 - product.price / oldPrice) * 100);
+              const rating = Math.round(product.rating?.rate || 4);
               // eslint-disable-next-line react-hooks/purity
-              const stockLeft = Math.floor(Math.random() * 100) + 20;
+              const stockLeft = Math.floor(Math.random() * 80) + 20;
 
               return (
                 <SwiperSlide key={product.id}>
                   <Link href={`/products/${product.id}`} scroll={true}>
                     <motion.div
-                      whileHover={{ scale: 1.04 }}
+                      whileHover={{ scale: 1.05 }}
                       transition={{ type: "spring", stiffness: 200 }}
                       className="bg-white text-gray-800 rounded-2xl p-4 shadow-md hover:shadow-2xl relative overflow-hidden group cursor-pointer"
                     >
-                      {/* 🏷 Product Image */}
+                      {/* 🖼 Image */}
                       <div className="relative w-full h-36 mb-3">
                         <Image
                           src={product.image}
@@ -93,25 +107,24 @@ const TopDeals = ({ products = [] }) => {
                         />
                       </div>
 
-                      {/* 🧾 Product Info */}
+                      {/* 🏷 Info */}
                       <h4 className="font-semibold text-sm line-clamp-2 h-[40px] mb-1">
                         {product.title}
                       </h4>
 
+                      {/* ⭐ Rating */}
                       <div className="flex justify-center items-center text-yellow-400 text-sm mb-1">
-                        {[...Array(5)].map((_, j) => (
+                        {[...Array(5)].map((_, i) => (
                           <FiStar
-                            key={j}
-                            className={`${
-                              j < Math.round(product.rating?.rate)
-                                ? "opacity-100"
-                                : "opacity-30"
-                            }`}
+                            key={i}
+                            className={
+                              i < rating ? "opacity-100" : "opacity-30"
+                            }
                           />
                         ))}
                       </div>
 
-                      {/* 💸 Prices */}
+                      {/* 💸 Price */}
                       <div className="text-gray-400 text-xs line-through">
                         ৳{oldPrice.toFixed(0)}
                       </div>
@@ -119,7 +132,7 @@ const TopDeals = ({ products = [] }) => {
                         ৳{product.price.toFixed(0)}
                       </div>
 
-                      {/* 📉 Stock Progress */}
+                      {/* 📊 Stock Bar */}
                       <div className="mt-2 w-full bg-gray-200 rounded-full h-2 overflow-hidden">
                         <div
                           className="bg-green-500 h-2 rounded-full"
@@ -130,12 +143,12 @@ const TopDeals = ({ products = [] }) => {
                         {stockLeft} pcs left
                       </p>
 
-                      {/* 🔖 Discount Badge */}
+                      {/* 🔖 Discount */}
                       <div className="absolute top-2 left-2 bg-gradient-to-r from-orange-500 to-red-600 text-white text-xs font-semibold px-2 py-1 rounded-full shadow">
                         -{discount}%
                       </div>
 
-                      {/* 🛒 Add to Cart Button */}
+                      {/* 🛒 Add to Cart */}
                       <motion.button
                         whileTap={{ scale: 0.9 }}
                         onClick={(e) => {
@@ -153,7 +166,7 @@ const TopDeals = ({ products = [] }) => {
             })}
           </Swiper>
 
-          {/* 🧭 Custom Arrows */}
+          {/* 🔄 Arrows */}
           <button
             ref={prevRef}
             className="absolute top-1/2 left-2 -translate-y-1/2 bg-white/30 hover:bg-white/60 backdrop-blur-md w-10 h-10 flex items-center justify-center rounded-full text-black cursor-pointer shadow-md transition-all duration-300 z-10"
@@ -173,4 +186,4 @@ const TopDeals = ({ products = [] }) => {
   );
 };
 
-export default TopDeals;
+export default YouMayAlsoLike;
