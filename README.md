@@ -92,18 +92,6 @@ src/
 
 
 
-_____________________________
-🎨 Design System
-| Element              | Style                                           |
-| -------------------- | ----------------------------------------------- |
-| **Primary Gradient** | `from-emerald-800 via-green-600 to-emerald-700` |
-| **Font Family**      | Geist Sans / Geist Mono                         |
-| **Layout**           | Glassmorphism + soft shadows                    |
-| **Animations**       | Subtle motion using Framer Motion               |
-| **Accessibility**    | Semantic HTML, ARIA roles, keyboard-friendly    |
-
-
-
 ⚙️ Configuration: fakestoreapi.com
 
 
