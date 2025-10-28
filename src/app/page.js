@@ -6,6 +6,7 @@ import HeroSlider from "@/components/HeroSlider";
 import { findTopProducts } from "@/utils/topProducts";
 import { motion } from "framer-motion";
 import { FiTrendingUp, FiShoppingBag, FiStar } from "react-icons/fi";
+import TopDeals from "@/components/TopDeals";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -85,36 +86,11 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-950">
       {/* Hero Slider */}
-      <HeroSlider>
-        <motion.div
-          initial={{ opacity: 0, x: 100 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5 }}
-          className="bg-white/80 dark:bg-gray-900/70 backdrop-blur-xl shadow-2xl rounded-3xl p-8 w-[380px] max-h-[600px] overflow-y-auto border border-white/20"
-        >
-          {/* Stats Section (small cards) */}
-          <div className="grid grid-cols-1 gap-4 mb-6">
-            <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-4 text-white flex justify-between items-center">
-              <span>Total</span>
-              <strong className="text-2xl">{products.length}</strong>
-            </div>
-            <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-4 text-white flex justify-between items-center">
-              <span>Top Rated</span>
-              <strong className="text-2xl">{topProducts.length}</strong>
-            </div>
-            <div className="bg-gradient-to-br from-green-500 to-teal-600 rounded-xl p-4 text-white flex justify-between items-center">
-              <span>Categories</span>
-              <strong className="text-2xl">
-                {[...new Set(products.map((p) => p.category))].length}
-              </strong>
-            </div>
-          </div>
+      <HeroSlider />
 
-          {/* Compact Search Filter */}
-          <SearchFilter products={products} onFilter={handleFilter} />
-        </motion.div>
-      </HeroSlider>
-      <div className="container mx-auto px-4 py-12">
+      <TopDeals products={products} />
+
+      <div className="container mx-auto px-4 mt-10">
         {/* Top Products Section */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}

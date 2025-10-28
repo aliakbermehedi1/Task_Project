@@ -58,10 +58,12 @@ const HeroSlider = () => {
     "/assets/banner2.jpeg",
     "/assets/banner3.jpeg",
     "/assets/banner4.jpeg",
+    "/assets/banner5.jpeg",
+    "/assets/banner6.jpeg",
   ];
 
   return (
-    <section className="w-full bg-white rounded-2xl shadow-sm">
+    <section className="w-full bg-white rounded-2xl shadow-sm p-4 h-[40vh]">
       <div className="flex flex-col md:flex-row gap-4">
         {/* Banner Section */}
         <div className="w-full md:w-3/4 rounded-2xl overflow-hidden">
@@ -74,7 +76,7 @@ const HeroSlider = () => {
           >
             {images.map((img, index) => (
               <SwiperSlide key={index}>
-                <div className="relative w-full h-[400px] md:h-[480px] rounded-2xl overflow-hidden">
+                <div className="relative w-full h-[340px] md:h-[420px] rounded-2xl overflow-hidden">
                   <Image
                     src={img}
                     alt={`Banner ${index + 1}`}
