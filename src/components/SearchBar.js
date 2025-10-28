@@ -1,9 +1,9 @@
 "use client";
+import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 import { FiSearch } from "react-icons/fi";
-import Link from "next/link";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 export default function SearchBar() {
   const [query, setQuery] = useState("");
@@ -57,20 +57,20 @@ export default function SearchBar() {
   return (
     <div ref={searchRef} className="relative w-full md:w-[500px]">
       {/* Search Input */}
-      <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700">
+      <div className="flex items-center bg-gray-50 dark:bg-gray-800 rounded-xl overflow-hidden shadow-md border border-gray-200 dark:border-gray-700">
         <input
           type="text"
-          placeholder="Search in Saimon Shop"
+          placeholder="Search in KENAKATA"
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
             setShowResults(true);
           }}
           onFocus={() => setShowResults(true)}
-          className="w-full px-4 py-3 bg-transparent text-gray-800 dark:text-gray-100 outline-none placeholder-gray-500"
+          className="w-full px-4 py-3 bg-transparent text-gray-800 dark:text-gray-100 outline-none placeholder-gray-500 text-sm sm:text-base"
         />
         <button
-          className="bg-gray-900 dark:bg-gray-700 text-white px-6 py-3 flex items-center justify-center"
+          className="bg-gradient-to-r from-emerald-800 via-green-600 to-emerald-700 text-white px-5 py-3 flex items-center justify-center transition-all hover:brightness-110 active:scale-95"
           aria-label="Search"
         >
           <FiSearch className="text-xl" />
@@ -81,13 +81,16 @@ export default function SearchBar() {
       <AnimatePresence>
         {showResults && query && (
           <motion.div
-            initial={{ opacity: 0, y: -5 }}
+            initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -5 }}
-            className="absolute z-50 mt-2 w-full bg-white dark:bg-gray-900 rounded-lg shadow-lg max-h-96 overflow-y-auto border border-gray-200 dark:border-gray-700"
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.2 }}
+            className="absolute z-50 mt-2 w-full bg-white dark:bg-gray-900 rounded-xl shadow-xl max-h-96 overflow-y-auto border border-gray-200 dark:border-gray-700 backdrop-blur-sm"
           >
             {loading ? (
-              <div className="p-4 text-center text-gray-500">Loading...</div>
+              <div className="p-4 text-center text-gray-500 animate-pulse">
+                Loading products...
+              </div>
             ) : filtered.length === 0 ? (
               <div className="p-4 text-center text-gray-500">
                 No results found
@@ -95,16 +98,21 @@ export default function SearchBar() {
             ) : (
               <>
                 <p className="px-4 py-2 text-sm text-gray-500 border-b dark:border-gray-700">
-                  Showing {filtered.length} results for <strong>{query}</strong>
+                  Showing{" "}
+                  <span className="font-semibold text-green-600 dark:text-green-400">
+                    {filtered.length}
+                  </span>{" "}
+                  results for <strong>{query}</strong>
                 </p>
+
                 {filtered.slice(0, 8).map((product) => (
                   <Link
                     key={product.id}
                     href={`/products/${product.id}`}
-                    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    className="flex items-center gap-3 px-4 py-3 hover:bg-green-50 dark:hover:bg-emerald-950/30 transition-colors"
                     onClick={() => setShowResults(false)}
                   >
-                    <div className="relative w-10 h-10 flex-shrink-0">
+                    <div className="relative w-10 h-10 shrink-0">
                       <Image
                         src={product.image}
                         alt={product.title}
@@ -123,8 +131,9 @@ export default function SearchBar() {
                     </div>
                   </Link>
                 ))}
+
                 {filtered.length > 8 && (
-                  <div className="px-4 py-3 text-center text-sm text-blue-600 dark:text-blue-400 font-medium border-t dark:border-gray-700 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800">
+                  <div className="px-4 py-3 text-center text-sm text-emerald-700 dark:text-emerald-400 font-medium border-t dark:border-gray-700 cursor-pointer hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition-colors">
                     Show More Results
                   </div>
                 )}

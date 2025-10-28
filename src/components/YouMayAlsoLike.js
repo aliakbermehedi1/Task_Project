@@ -1,15 +1,15 @@
 "use client";
+import { FiShoppingCart, FiStar } from "react-icons/fi";
+import { Navigation, Autoplay } from "swiper/modules";
 import { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay } from "swiper/modules";
-import "swiper/css";
+import useCartStore from "@/store/cartStore";
+import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 import "swiper/css/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { FiShoppingCart, FiStar } from "react-icons/fi";
-import { toast } from "react-toastify";
-import useCartStore from "@/store/cartStore";
+import "swiper/css";
 
 const YouMayAlsoLike = ({ category }) => {
   const [related, setRelated] = useState([]);
@@ -18,7 +18,7 @@ const YouMayAlsoLike = ({ category }) => {
   const nextRef = useRef(null);
   const { addToCart } = useCartStore();
 
-  // ✅ Fetch similar products by category
+  // Fetch similar products by category
   useEffect(() => {
     const fetchRelated = async () => {
       const res = await fetch("https://fakestoreapi.com/products");
@@ -52,8 +52,8 @@ const YouMayAlsoLike = ({ category }) => {
 
   return (
     <section className="mt-20">
-      <div className="bg-gradient-to-r from-emerald-800 via-green-600 to-emerald-700 rounded-3xl p-6 shadow-2xl text-white relative overflow-hidden">
-        {/* 🖤 Header */}
+      <div className="bg-linear-to-r from-emerald-800 via-green-600 to-emerald-700 rounded-3xl p-6 shadow-2xl text-white relative overflow-hidden">
+        {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-2xl font-extrabold uppercase flex items-center gap-2">
@@ -68,7 +68,7 @@ const YouMayAlsoLike = ({ category }) => {
           </p>
         </div>
 
-        {/* 🛍 Product Carousel */}
+        {/* Product Carousel */}
         <div className="relative">
           <Swiper
             modules={[Navigation, Autoplay]}
@@ -97,7 +97,7 @@ const YouMayAlsoLike = ({ category }) => {
                       transition={{ type: "spring", stiffness: 200 }}
                       className="bg-white text-gray-800 rounded-2xl p-4 shadow-md hover:shadow-2xl relative overflow-hidden group cursor-pointer"
                     >
-                      {/* 🖼 Image */}
+                      {/* Image */}
                       <div className="relative w-full h-36 mb-3">
                         <Image
                           src={product.image}
@@ -107,12 +107,12 @@ const YouMayAlsoLike = ({ category }) => {
                         />
                       </div>
 
-                      {/* 🏷 Info */}
+                      {/* Info */}
                       <h4 className="font-semibold text-sm line-clamp-2 h-[40px] mb-1">
                         {product.title}
                       </h4>
 
-                      {/* ⭐ Rating */}
+                      {/* Rating */}
                       <div className="flex justify-center items-center text-yellow-400 text-sm mb-1">
                         {[...Array(5)].map((_, i) => (
                           <FiStar
@@ -124,7 +124,7 @@ const YouMayAlsoLike = ({ category }) => {
                         ))}
                       </div>
 
-                      {/* 💸 Price */}
+                      {/* Price */}
                       <div className="text-gray-400 text-xs line-through">
                         ৳{oldPrice.toFixed(0)}
                       </div>
@@ -132,7 +132,7 @@ const YouMayAlsoLike = ({ category }) => {
                         ৳{product.price.toFixed(0)}
                       </div>
 
-                      {/* 📊 Stock Bar */}
+                      {/* Stock Bar */}
                       <div className="mt-2 w-full bg-gray-200 rounded-full h-2 overflow-hidden">
                         <div
                           className="bg-green-500 h-2 rounded-full"
@@ -143,19 +143,19 @@ const YouMayAlsoLike = ({ category }) => {
                         {stockLeft} pcs left
                       </p>
 
-                      {/* 🔖 Discount */}
-                      <div className="absolute top-2 left-2 bg-gradient-to-r from-orange-500 to-red-600 text-white text-xs font-semibold px-2 py-1 rounded-full shadow">
+                      {/* Discount */}
+                      <div className="absolute top-2 left-2 bg-linear-to-r from-orange-500 to-red-600 text-white text-xs font-semibold px-2 py-1 rounded-full shadow">
                         -{discount}%
                       </div>
 
-                      {/* 🛒 Add to Cart */}
+                      {/* Add to Cart */}
                       <motion.button
                         whileTap={{ scale: 0.9 }}
                         onClick={(e) => {
                           e.preventDefault();
                           handleAddToCart(product);
                         }}
-                        className="absolute bottom-3 right-3 bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-500 hover:to-emerald-600 p-2 rounded-full shadow-md text-white"
+                        className="absolute bottom-3 right-3 bg-linear-to-r from-green-600 to-emerald-700 hover:from-green-500 hover:to-emerald-600 p-2 rounded-full shadow-md text-white"
                       >
                         <FiShoppingCart className="text-xl" />
                       </motion.button>
@@ -166,7 +166,7 @@ const YouMayAlsoLike = ({ category }) => {
             })}
           </Swiper>
 
-          {/* 🔄 Arrows */}
+          {/* Arrows */}
           <button
             ref={prevRef}
             className="absolute top-1/2 left-2 -translate-y-1/2 bg-white/30 hover:bg-white/60 backdrop-blur-md w-10 h-10 flex items-center justify-center rounded-full text-black cursor-pointer shadow-md transition-all duration-300 z-10"

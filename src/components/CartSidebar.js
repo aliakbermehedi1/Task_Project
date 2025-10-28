@@ -1,10 +1,10 @@
 "use client";
-import useCartStore from "@/store/cartStore";
-import { motion, AnimatePresence } from "framer-motion";
 import { FiX, FiShoppingBag, FiTrash2, FiPlus, FiMinus } from "react-icons/fi";
-import Link from "next/link";
-import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import useCartStore from "@/store/cartStore";
 import { toast } from "react-toastify";
+import { useState } from "react";
+import Link from "next/link";
 
 export default function CartSidebar() {
   const {
@@ -18,7 +18,7 @@ export default function CartSidebar() {
   } = useCartStore();
 
   const [isCheckingOut, setIsCheckingOut] = useState(false);
-  const [confirmItem, setConfirmItem] = useState(null); // 👈 For confirmation modal
+  const [confirmItem, setConfirmItem] = useState(null); // For confirmation
 
   const handleCheckout = async () => {
     setIsCheckingOut(true);
@@ -31,7 +31,7 @@ export default function CartSidebar() {
 
   const handleDecrease = (item) => {
     if (item.quantity === 1) {
-      setConfirmItem(item); // 👈 open modal
+      setConfirmItem(item);
     } else {
       updateQuantity(item.id, item.quantity - 1);
     }

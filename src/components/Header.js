@@ -1,9 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { useLayoutEffect, useState, useEffect } from "react";
-import useCartStore from "../store/cartStore";
+import { BsSunFill, BsMoonStarsFill } from "react-icons/bs";
 import { motion, AnimatePresence } from "framer-motion";
+import useCartStore from "../store/cartStore";
+import SearchBar from "./SearchBar";
+import Link from "next/link";
 import {
   FiShoppingCart,
   FiMenu,
@@ -11,8 +13,6 @@ import {
   FiMaximize2,
   FiMinimize2,
 } from "react-icons/fi";
-import { BsSunFill, BsMoonStarsFill } from "react-icons/bs";
-import SearchBar from "./SearchBar";
 
 // ✅ Import Google Font (Galada)
 import { Galada } from "next/font/google";
@@ -40,14 +40,14 @@ export default function Header() {
 
   const cartItemCount = getTotalItems();
 
-  // 🌀 Blink animation when cart count changes
+  //Blink animation when cart count changes
   useEffect(() => {
     if (mounted) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setAnimateCart(true);
       const timer = setTimeout(() => setAnimateCart(false), 500);
       return () => clearTimeout(timer);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cartItemCount]);
 
   const toggleTheme = () => {
@@ -81,7 +81,7 @@ export default function Header() {
             <motion.span
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
-              className={`${galada.className} text-4xl font-bold select-none bg-clip-text text-transparent bg-gradient-to-r from-black to-gray-700 dark:from-white dark:to-gray-400`} 
+              className={`${galada.className} text-4xl font-bold select-none bg-clip-text text-transparent bg-gradient-to-r from-black to-gray-700 dark:from-white dark:to-gray-400`}
               style={{
                 letterSpacing: "-0.5px",
                 textShadow:

@@ -1,6 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
 import { FiArrowUp } from "react-icons/fi";
 
 export default function ScrollToTop() {
@@ -40,7 +40,7 @@ export default function ScrollToTop() {
           className="fixed bottom-8 right-8 z-50 group focus:outline-none"
         >
           <div className="relative">
-            {/* 🌀 Glowing animated aura */}
+            {/* Glowing animated */}
             <motion.div
               animate={{
                 scale: [1, 1.3, 1],
@@ -51,7 +51,7 @@ export default function ScrollToTop() {
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="absolute inset-0 rounded-full bg-gradient-to-r from-green-500 via-emerald-600 to-teal-500 blur-md"
+              className="absolute inset-0 rounded-full bg-linear-to-r from-green-500 via-emerald-600 to-teal-500 blur-md"
             />
 
             {/* 💎 Main Button */}
@@ -64,7 +64,7 @@ export default function ScrollToTop() {
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="relative w-14 h-14 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-500 rounded-full flex items-center justify-center shadow-lg hover:shadow-2xl transition-all"
+              className="relative w-14 h-14 bg-linear-to-r from-green-600 via-emerald-600 to-teal-500 rounded-full flex items-center justify-center shadow-lg hover:shadow-2xl transition-all"
             >
               <FiArrowUp className="text-white text-2xl group-hover:animate-bounce" />
             </motion.div>

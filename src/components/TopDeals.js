@@ -1,15 +1,15 @@
 "use client";
-import { useRef, useState, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Autoplay } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import { motion } from "framer-motion";
 import { FiShoppingCart, FiStar } from "react-icons/fi";
+import { Navigation, Autoplay } from "swiper/modules";
+import { useRef, useState, useEffect } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
 import useCartStore from "../store/cartStore";
+import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import Image from "next/image";
+import "swiper/css/navigation";
+import Link from "next/link";
+import "swiper/css";
 
 const TopDeals = ({ products = [] }) => {
   const top10 = products.slice(0, 10);
@@ -39,8 +39,8 @@ const TopDeals = ({ products = [] }) => {
 
   return (
     <section className="my-10">
-      <div className="bg-gradient-to-r from-emerald-800 via-green-600 to-emerald-700 rounded-3xl p-5 shadow-2xl text-white relative overflow-hidden">
-        {/* 🔥 Header */}
+      <div className="bg-linear-to-r from-emerald-800 via-green-600 to-emerald-700 rounded-3xl p-5 shadow-2xl text-white relative overflow-hidden">
+        {/* Header */}
         <div className="flex items-center justify-between mb-4">
           <div>
             <h2 className="text-2xl font-extrabold uppercase flex items-center gap-2">
@@ -55,7 +55,7 @@ const TopDeals = ({ products = [] }) => {
           </p>
         </div>
 
-        {/* 🛒 Product Carousel */}
+        {/* Product Carousel */}
         <div className="relative">
           <Swiper
             modules={[Navigation, Autoplay]}
@@ -83,7 +83,7 @@ const TopDeals = ({ products = [] }) => {
                       transition={{ type: "spring", stiffness: 200 }}
                       className="bg-white text-gray-800 rounded-2xl p-4 shadow-md hover:shadow-2xl relative overflow-hidden group cursor-pointer"
                     >
-                      {/* 🏷 Product Image */}
+                      {/* Product Image */}
                       <div className="relative w-full h-36 mb-3">
                         <Image
                           src={product.image}
@@ -93,7 +93,7 @@ const TopDeals = ({ products = [] }) => {
                         />
                       </div>
 
-                      {/* 🧾 Product Info */}
+                      {/* Product Info */}
                       <h4 className="font-semibold text-sm line-clamp-2 h-[40px] mb-1">
                         {product.title}
                       </h4>
@@ -111,7 +111,7 @@ const TopDeals = ({ products = [] }) => {
                         ))}
                       </div>
 
-                      {/* 💸 Prices */}
+                      {/* Prices */}
                       <div className="text-gray-400 text-xs line-through">
                         ৳{oldPrice.toFixed(0)}
                       </div>
@@ -119,7 +119,7 @@ const TopDeals = ({ products = [] }) => {
                         ৳{product.price.toFixed(0)}
                       </div>
 
-                      {/* 📉 Stock Progress */}
+                      {/* Stock Progress */}
                       <div className="mt-2 w-full bg-gray-200 rounded-full h-2 overflow-hidden">
                         <div
                           className="bg-green-500 h-2 rounded-full"
@@ -130,19 +130,19 @@ const TopDeals = ({ products = [] }) => {
                         {stockLeft} pcs left
                       </p>
 
-                      {/* 🔖 Discount Badge */}
-                      <div className="absolute top-2 left-2 bg-gradient-to-r from-orange-500 to-red-600 text-white text-xs font-semibold px-2 py-1 rounded-full shadow">
+                      {/* Discount Badge */}
+                      <div className="absolute top-2 left-2 bg-linear-to-r from-orange-500 to-red-600 text-white text-xs font-semibold px-2 py-1 rounded-full shadow">
                         -{discount}%
                       </div>
 
-                      {/* 🛒 Add to Cart Button */}
+                      {/* Add to Cart Button */}
                       <motion.button
                         whileTap={{ scale: 0.9 }}
                         onClick={(e) => {
                           e.preventDefault();
                           handleAddToCart(product);
                         }}
-                        className="absolute bottom-3 right-3 bg-gradient-to-r from-green-600 to-emerald-700 hover:from-green-500 hover:to-emerald-600 p-2 rounded-full shadow-md text-white"
+                        className="absolute bottom-3 right-3 bg-linear-to-r from-green-600 to-emerald-700 hover:from-green-500 hover:to-emerald-600 p-2 rounded-full shadow-md text-white"
                       >
                         <FiShoppingCart className="text-xl" />
                       </motion.button>
@@ -153,7 +153,7 @@ const TopDeals = ({ products = [] }) => {
             })}
           </Swiper>
 
-          {/* 🧭 Custom Arrows */}
+          {/* Custom Arrows */}
           <button
             ref={prevRef}
             className="absolute top-1/2 left-2 -translate-y-1/2 bg-white/30 hover:bg-white/60 backdrop-blur-md w-10 h-10 flex items-center justify-center rounded-full text-black cursor-pointer shadow-md transition-all duration-300 z-10"

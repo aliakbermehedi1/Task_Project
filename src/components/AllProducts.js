@@ -1,14 +1,14 @@
 "use client";
-import { useState, useMemo } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { motion } from "framer-motion";
 import { FiShoppingCart, FiStar } from "react-icons/fi";
 import useCartStore from "@/store/cartStore";
+import { useState, useMemo } from "react";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function AllProducts({ products = [] }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [visibleCount, setVisibleCount] = useState(9); // 👈 show 9 initially
+  const [visibleCount, setVisibleCount] = useState(9); //initially 9 show
   const addToCart = useCartStore((state) => state.addToCart);
 
   const categories = useMemo(() => {
@@ -156,7 +156,7 @@ export default function AllProducts({ products = [] }) {
         </motion.div>
       </div>
 
-      {/* ✅ Show More / Show Less Buttons */}
+      {/* Show More & Show Less Buttons */}
       {(visibleCount < filtered.length || visibleCount > 9) && (
         <div className="flex justify-end mt-12 space-x-4 mx-auto px-6">
           {visibleCount < filtered.length && (

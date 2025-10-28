@@ -1,18 +1,20 @@
 "use client";
-import { useState, useEffect } from "react";
-import ProductCard from "@/components/ProductCard";
-import HeroSlider from "@/components/HeroSlider";
-import { findTopProducts } from "@/utils/topProducts";
-import { motion } from "framer-motion";
-import { FiTrendingUp, FiShoppingBag, FiStar } from "react-icons/fi";
-import TopDeals from "@/components/TopDeals";
 import AllProducts from "@/components/AllProducts";
+import HeroSlider from "@/components/HeroSlider";
+import { FiShoppingBag } from "react-icons/fi";
+import TopDeals from "@/components/TopDeals";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // 👇 Scroll to top when this page loads
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -22,7 +24,6 @@ export default function Home() {
 
         const data = await res.json();
         setProducts(data);
-        setFilteredProducts(data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -118,9 +119,6 @@ export default function Home() {
       </div>
     );
   }
-
-  // ✅ MAIN PAGE
-  const topProducts = findTopProducts(products);
 
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-950 mx-2 md:mx-10">

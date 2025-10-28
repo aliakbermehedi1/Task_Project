@@ -1,10 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
-import Link from "next/link";
 import { Galada } from "next/font/google";
 import { toast } from "react-toastify";
+import { motion } from "framer-motion";
 import "remixicon/fonts/remixicon.css";
+import Link from "next/link";
 
 const galada = Galada({
   subsets: ["latin"],
@@ -22,7 +22,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-gradient-to-b from-gray-100 to-gray-200 dark:from-gray-950 dark:to-gray-900 border-t border-gray-300 dark:border-gray-800 mt-20">
+    <footer className="bg-linear-to-b from-gray-100 to-gray-200 dark:from-gray-950 dark:to-gray-900 border-t border-gray-300 dark:border-gray-800 mt-20">
       <div className="container mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand & Description */}
@@ -31,7 +31,7 @@ export default function Footer() {
               <motion.span
                 whileHover={{ scale: 1.05 }}
                 transition={{ duration: 0.3 }}
-                className={`${galada.className} text-4xl font-bold select-none bg-clip-text text-transparent bg-gradient-to-r from-black to-gray-700 dark:from-white dark:to-gray-400`}
+                className={`${galada.className} text-4xl font-bold select-none bg-clip-text text-transparent bg-linear-to-r from-black to-gray-700 dark:from-white dark:to-gray-400`}
                 style={{
                   letterSpacing: "-0.5px",
                   textShadow:
@@ -127,7 +127,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               whileHover={{
                 scale: 1.1,
-                color: "#10B981", // nice green highlight
+                color: "#10B981",
                 textShadow: "0 0 8px rgba(16,185,129,0.8)",
               }}
               transition={{ type: "spring", stiffness: 300 }}

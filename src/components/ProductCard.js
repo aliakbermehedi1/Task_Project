@@ -1,9 +1,11 @@
 "use client";
-import Link from "next/link";
+
+import { FiShoppingCart, FiHeart, FiStar } from "react-icons/fi";
 import useCartStore from "../store/cartStore";
 import { motion } from "framer-motion";
-import { FiShoppingCart, FiHeart, FiStar } from "react-icons/fi";
 import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function ProductCard({ product, featured }) {
   const { addToCart } = useCartStore();
@@ -28,7 +30,7 @@ export default function ProductCard({ product, featured }) {
       {/* Featured Badge */}
       {featured && (
         <div className="absolute top-3 left-3 z-10">
-          <div className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center space-x-1">
+          <div className="bg-linear-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center space-x-1 shadow">
             <FiStar className="text-sm" />
             <span>TOP RATED</span>
           </div>
@@ -41,10 +43,10 @@ export default function ProductCard({ product, featured }) {
         whileTap={{ scale: 0.9 }}
         transition={{ duration: 0.15 }}
         onClick={handleLike}
-        className="absolute top-3 right-3 z-10 bg-white dark:bg-gray-700 p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+        className="absolute top-3 right-3 z-10 bg-white dark:bg-gray-700 p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-200"
       >
         <FiHeart
-          className={`text-lg ${
+          className={`text-lg transition ${
             isLiked
               ? "fill-red-500 text-red-500"
               : "text-gray-600 dark:text-gray-300"
@@ -55,14 +57,17 @@ export default function ProductCard({ product, featured }) {
       <Link href={`/products/${product.id}`}>
         {/* Image Container */}
         <div className="relative h-56 overflow-hidden bg-gray-100 dark:bg-gray-700 rounded-t-2xl">
-          <img
+          <Image
             src={product.image}
             alt={product.title}
-            className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-300"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+            className="object-contain p-4 group-hover:scale-110 transition-transform duration-500 ease-out"
+            priority={featured}
           />
 
           {/* Overlay on Hover */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>
       </Link>
 
@@ -93,7 +98,7 @@ export default function ProductCard({ product, featured }) {
           </span>
         </div>
 
-        {/* Price and Add to Cart */}
+        {/* Price + Add to Cart */}
         <div className="flex items-center justify-between mt-4">
           <div>
             <span className="text-2xl font-bold text-green-600 dark:text-green-400">
@@ -106,7 +111,7 @@ export default function ProductCard({ product, featured }) {
             whileTap={{ scale: 0.95 }}
             transition={{ duration: 0.15 }}
             onClick={handleAddToCart}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 rounded-xl hover:shadow-lg transition-all"
+            className="bg-linear-to-r from-blue-600 to-purple-600 text-white p-3 rounded-xl hover:shadow-lg transition-all"
           >
             <FiShoppingCart className="text-lg" />
           </motion.button>
