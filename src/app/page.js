@@ -32,10 +32,6 @@ export default function Home() {
     fetchProducts();
   }, []);
 
-  const handleFilter = (filtered) => {
-    setFilteredProducts(filtered);
-  };
-
   // 🌟 PREMIUM LOADING SCREEN
   if (loading) {
     return (
