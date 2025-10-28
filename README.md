@@ -97,6 +97,7 @@ src/
 
 
 🌐 Deployment (Vercel)
+link: https://kenakata24.vercel.app/
 
 
 
