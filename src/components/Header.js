@@ -1,125 +1,165 @@
 "use client";
+
 import Link from "next/link";
+import { useLayoutEffect, useState, useEffect } from "react";
 import useCartStore from "../store/cartStore";
-import { useLayoutEffect, useState } from "react";
-import ThemeToggle from "./ThemeToggle";
-import { FiShoppingCart, FiMenu, FiX } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  FiShoppingCart,
+  FiMenu,
+  FiX,
+  FiMaximize2,
+  FiMinimize2,
+} from "react-icons/fi";
+import { BsSunFill, BsMoonStarsFill } from "react-icons/bs";
+import SearchBar from "./SearchBar";
 
 export default function Header() {
   const { getTotalItems, toggleCart } = useCartStore();
   const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [animateCart, setAnimateCart] = useState(false);
 
   useLayoutEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
-
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const cartItemCount = getTotalItems();
 
+  // 🌀 Trigger blink animation when cart count changes
+  useEffect(() => {
+    if (mounted) {
+      setAnimateCart(true);
+      const timer = setTimeout(() => setAnimateCart(false), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [cartItemCount]);
+
+  const toggleTheme = () => {
+    const newTheme = !darkMode;
+    setDarkMode(newTheme);
+    document.documentElement.classList.toggle("dark", newTheme);
+  };
+
+  const toggleFullScreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      setIsFullScreen(true);
+    } else {
+      document.exitFullscreen();
+      setIsFullScreen(false);
+    }
+  };
+
   return (
     <header
       className={`sticky top-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white/90 dark:bg-gray-900/95 backdrop-blur-md shadow-lg"
-          : "bg-white dark:bg-gray-900 shadow-md"
+          ? "bg-white/90 dark:bg-black/95 backdrop-blur-md shadow-sm"
+          : "bg-white dark:bg-black shadow-sm"
       }`}
     >
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16 md:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 group">
+          <Link href="/" className="flex items-center space-x-3 group">
             <motion.div
-              whileHover={{ rotate: 360 }}
-              transition={{ duration: 0.5 }}
-              className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2 }}
+              className="w-10 h-10 rounded-xl flex items-center justify-center bg-black dark:bg-gray-800 shadow-sm"
             >
               <span className="text-white font-bold text-xl">S</span>
             </motion.div>
-            <div className="flex flex-col">
-              <span className="text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                Saimon Shop
-              </span>
-              <span className="text-xs text-gray-500 dark:text-gray-400 -mt-1">
-                Premium Quality
-              </span>
-            </div>
+            <span className="text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+              SGL Shop
+            </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link
-              href="/"
-              className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors relative group"
-            >
-              Home
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></span>
-            </Link>
+          {/* Desktop Middle — Search */}
+          <div className="hidden md:flex flex-1 justify-center">
+            <SearchBar />
+          </div>
 
-            <Link
-              href="/products"
-              className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors relative group"
-            >
-              Products
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></span>
-            </Link>
-
-            <ThemeToggle />
-
+          {/* Right side icons */}
+          <div className="flex items-center space-x-4">
+            {/* Fullscreen */}
             <motion.button
-              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={toggleFullScreen}
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+              aria-label="Toggle Fullscreen"
+            >
+              {isFullScreen ? (
+                <FiMinimize2 className="text-xl text-gray-700 dark:text-gray-300" />
+              ) : (
+                <FiMaximize2 className="text-xl text-gray-700 dark:text-gray-300" />
+              )}
+            </motion.button>
+
+            {/* Theme toggle */}
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              onClick={toggleTheme}
+              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+              aria-label="Toggle Theme"
+            >
+              {darkMode ? (
+                <BsSunFill className="text-lg text-gray-300" />
+              ) : (
+                <BsMoonStarsFill className="text-lg text-gray-700" />
+              )}
+            </motion.button>
+
+            {/* Cart with blink animation */}
+            <motion.button
               whileTap={{ scale: 0.95 }}
               onClick={toggleCart}
-              className="relative flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2.5 rounded-full hover:shadow-lg transition-all"
+              className="relative p-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:shadow-md transition flex items-center justify-center"
+              aria-label="Open Cart"
+              animate={
+                animateCart
+                  ? {
+                      scale: [1, 1.2, 1],
+                      boxShadow: [
+                        "0 0 0px #000",
+                        "0 0 10px #00A8FF",
+                        "0 0 0px #000",
+                      ],
+                    }
+                  : {}
+              }
+              transition={{ duration: 0.4 }}
             >
-              <FiShoppingCart className="text-xl" />
-              <span className="font-medium">Cart</span>
+              <FiShoppingCart className="text-2xl text-gray-800 dark:text-gray-200" />
               {mounted && cartItemCount > 0 && (
                 <motion.span
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold shadow-lg"
+                  className="absolute -top-1.5 -right-1.5 bg-blue-500 text-white rounded-full w-4.5 h-4.5 flex items-center justify-center text-[10px] font-semibold"
                 >
                   {cartItemCount}
                 </motion.span>
               )}
             </motion.button>
-          </nav>
 
-          {/* Mobile Menu Button */}
-          <div className="flex md:hidden items-center space-x-4">
-            <ThemeToggle />
-            <motion.button
-              whileTap={{ scale: 0.9 }}
-              onClick={toggleCart}
-              className="relative p-2"
-            >
-              <FiShoppingCart className="text-2xl text-gray-700 dark:text-gray-300" />
-              {mounted && cartItemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
-                  {cartItemCount}
-                </span>
-              )}
-            </motion.button>
+            {/* Mobile menu */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-2xl text-gray-700 dark:text-gray-300"
+              className="md:hidden text-2xl text-gray-700 dark:text-gray-300"
+              aria-label="Toggle Menu"
             >
               {mobileMenuOpen ? <FiX /> : <FiMenu />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Search */}
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div
@@ -128,21 +168,8 @@ export default function Header() {
               exit={{ opacity: 0, height: 0 }}
               className="md:hidden overflow-hidden"
             >
-              <div className="py-4 space-y-3">
-                <Link
-                  href="/"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/products"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
-                >
-                  Products
-                </Link>
+              <div className="py-3 px-4">
+                <SearchBar />
               </div>
             </motion.div>
           )}

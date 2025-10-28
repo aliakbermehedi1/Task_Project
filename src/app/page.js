@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import ProductCard from "@/components/ProductCard";
-import SearchFilter from "@/components/SearchFilter";
 import HeroSlider from "@/components/HeroSlider";
 import { findTopProducts } from "@/utils/topProducts";
 import { motion } from "framer-motion";
@@ -84,7 +83,7 @@ export default function Home() {
   const topProducts = findTopProducts(products);
 
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-gray-950">
+    <main className="min-h-screen bg-gray-50 dark:bg-gray-950 mx-10">
       {/* Hero Slider */}
       <HeroSlider />
 

@@ -63,7 +63,7 @@ const HeroSlider = () => {
   ];
 
   return (
-    <section className="w-full bg-white rounded-2xl shadow-sm p-4 h-[40vh]">
+    <section className="w-full rounded-2xl my-4">
       <div className="flex flex-col md:flex-row gap-4">
         {/* Banner Section */}
         <div className="w-full md:w-3/4 rounded-2xl overflow-hidden">
@@ -76,7 +76,7 @@ const HeroSlider = () => {
           >
             {images.map((img, index) => (
               <SwiperSlide key={index}>
-                <div className="relative w-full h-[340px] md:h-[420px] rounded-2xl overflow-hidden">
+                <div className="relative w-full h-[340px] md:h-[410px] rounded-2xl overflow-hidden">
                   <Image
                     src={img}
                     alt={`Banner ${index + 1}`}
@@ -91,7 +91,7 @@ const HeroSlider = () => {
         </div>
 
         {/* Campaign Section */}
-        <div className="w-full md:w-1/4 bg-gray-50 rounded-2xl p-5 flex flex-col justify-start items-center">
+        <div className="w-full md:w-1/4 bg-gray-100 shadow-sm rounded-2xl p-5 flex flex-col justify-start items-center">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             Upcoming Campaigns
           </h3>

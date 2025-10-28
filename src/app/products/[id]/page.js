@@ -4,7 +4,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import AddToCartButton from "@/components/AddToCartButton";
 import { motion } from "framer-motion";
-import { FiStar, FiShield, FiTruck, FiRefreshCw, FiHeart } from "react-icons/fi";
+import {
+  FiStar,
+  FiShield,
+  FiTruck,
+  FiRefreshCw,
+  FiHeart,
+} from "react-icons/fi";
 import Link from "next/link";
 
 export default function ProductDetail() {
@@ -53,7 +59,7 @@ export default function ProductDetail() {
 
   if (error || !product) {
     return (
-      <div className="container mx-auto px-4 py-12 text-center">
+      <div className="container mx-auto px-4 py-12 text-center ">
         <div className="max-w-md mx-auto">
           <div className="w-32 h-32 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mx-auto mb-6">
             <span className="text-6xl">😕</span>
@@ -214,8 +220,12 @@ export default function ProductDetail() {
                 <FiTruck className="text-blue-600 dark:text-blue-400 text-xl" />
               </div>
               <div>
-                <p className="font-semibold text-gray-900 dark:text-white">Free Shipping</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">On orders over $50</p>
+                <p className="font-semibold text-gray-900 dark:text-white">
+                  Free Shipping
+                </p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  On orders over $50
+                </p>
               </div>
             </div>
 
@@ -224,8 +234,12 @@ export default function ProductDetail() {
                 <FiShield className="text-green-600 dark:text-green-400 text-xl" />
               </div>
               <div>
-                <p className="font-semibold text-gray-900 dark:text-white">Secure Payment</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">100% protected</p>
+                <p className="font-semibold text-gray-900 dark:text-white">
+                  Secure Payment
+                </p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  100% protected
+                </p>
               </div>
             </div>
 
@@ -234,8 +248,12 @@ export default function ProductDetail() {
                 <FiRefreshCw className="text-purple-600 dark:text-purple-400 text-xl" />
               </div>
               <div>
-                <p className="font-semibold text-gray-900 dark:text-white">Easy Returns</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">30-day guarantee</p>
+                <p className="font-semibold text-gray-900 dark:text-white">
+                  Easy Returns
+                </p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  30-day guarantee
+                </p>
               </div>
             </div>
 
@@ -244,8 +262,12 @@ export default function ProductDetail() {
                 <FiStar className="text-yellow-600 dark:text-yellow-400 text-xl" />
               </div>
               <div>
-                <p className="font-semibold text-gray-900 dark:text-white">Top Quality</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Premium products</p>
+                <p className="font-semibold text-gray-900 dark:text-white">
+                  Top Quality
+                </p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  Premium products
+                </p>
               </div>
             </div>
           </div>
